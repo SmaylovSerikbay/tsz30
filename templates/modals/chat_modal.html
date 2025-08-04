@@ -1,0 +1,23 @@
+<!-- Chat Modal -->
+<div id="chatModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('chatModal')">
+      <i class="ri-close-line"></i>
+    </button>
+    <div class="modal-header">
+      <h2 class="modal-title" id="chatTitle">Чат</h2>
+    </div>
+    <div class="chat-container">
+      <div class="chat-messages" id="chatMessages">
+        <!-- Messages will be loaded dynamically -->
+      </div>
+      <form onsubmit="sendMessage(event)" class="chat-input">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <input type="text" class="form-input" placeholder="Введите сообщение..." id="messageInput" name="message">
+        <button type="submit" class="btn accent">
+          <i class="ri-send-plane-fill"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div> 

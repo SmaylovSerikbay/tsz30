@@ -1,0 +1,310 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="profile-container">
+  <!-- Компактный хедер профиля -->
+  <div class="profile-header">
+    {% if profile_user.profile_photo %}
+      <img src="{{ profile_user.profile_photo.url }}" alt="Фото профиля" class="profile-photo">
+    {% else %}
+      <img src="{% static 'images/default-avatar.jpg' %}" alt="Фото по умолчанию" class="profile-photo">
+    {% endif %}
+    
+    <div class="profile-info">
+      <h1 class="profile-name">{{ profile_user.get_full_name }}</h1>
+      
+      {% if profile_user.user_type == 'performer' and profile_user.service_type %}
+        <div class="profile-specialty">
+          {% if profile_user.service_type.code == 'photo' %}
+            <i class="ri-camera-line"></i> {{ profile_user.service_type.name }}
+          {% elif profile_user.service_type.code == 'video' %}
+            <i class="ri-video-line"></i> {{ profile_user.service_type.name }}
+          {% elif profile_user.service_type.code == 'music' %}
+            <i class="ri-music-2-line"></i> {{ profile_user.service_type.name }}
+          {% elif profile_user.service_type.code == 'host' %}
+            <i class="ri-mic-line"></i> {{ profile_user.service_type.name }}
+          {% elif profile_user.service_type.code == 'dance' %}
+            <i class="ri-emotion-happy-line"></i> {{ profile_user.service_type.name }}
+          {% elif profile_user.service_type.code == 'restaurant' %}
+            <i class="ri-restaurant-line"></i> {{ profile_user.service_type.name }}
+          {% elif profile_user.service_type.code == 'makeup' %}
+            <i class="ri-palette-line"></i> {{ profile_user.service_type.name }}
+          {% elif profile_user.service_type.code == 'registry' %}
+            <i class="ri-heart-line"></i> {{ profile_user.service_type.name }}
+          {% elif profile_user.service_type.code == 'cottage' %}
+            <i class="ri-home-line"></i> {{ profile_user.service_type.name }}
+          {% elif profile_user.service_type.code == 'recreation_areas' %}
+            <i class="ri-tree-line"></i> {{ profile_user.service_type.name }}
+          {% elif profile_user.service_type.code == 'star' %}
+            <i class="ri-star-line"></i> {{ profile_user.service_type.name }}
+          {% elif profile_user.service_type.code == 'aphishe' %}
+            <i class="ri-file-text-line"></i> {{ profile_user.service_type.name }}
+          {% else %}
+            <i class="ri-briefcase-line"></i> {{ profile_user.service_type.name|default:"Исполнитель" }}
+          {% endif %}
+        </div>
+      {% endif %}
+      
+      {% if profile_user.bio %}
+        <p class="profile-bio">{{ profile_user.bio }}</p>
+      {% endif %}
+      
+      <div class="profile-meta">
+        <div class="meta-item">
+          <i class="ri-map-pin-line"></i>
+          <span>{{ profile_user.city.name|default:"Не указан" }}</span>
+        </div>
+        {% if profile_user.user_type == 'performer' %}
+          <div class="meta-item">
+            <i class="ri-star-fill"></i>
+            <span>{{ profile_user.rating|floatformat:1 }} ({{ profile_user.reviews_received.count }} отзывов)</span>
+          </div>
+          <div class="meta-item">
+            <i class="ri-calendar-check-line"></i>
+            <span>{{ profile_user.completed_orders_count }} мероприятий</span>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if is_own_profile %}
+        <a href="{% url 'main:profile_settings' %}" class="btn accent" style="margin-top: 12px;">
+          <i class="ri-edit-line"></i> Редактировать профиль
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Табы -->
+  <div class="profile-tabs">
+    <div class="tab-buttons">
+      {% if profile_user.user_type == 'performer' %}
+        <button class="tab-button active" onclick="showTab('portfolio', this)">
+          <i class="ri-image-line"></i> Портфолио
+        </button>
+        <button class="tab-button" onclick="showTab('tariffs', this)">
+          <i class="ri-money-dollar-circle-line"></i> Тарифы
+        </button>
+        <button class="tab-button" onclick="showTab('reviews', this)">
+          <i class="ri-star-line"></i> Отзывы
+        </button>
+      {% endif %}
+      {% if is_own_profile and user.user_type == 'performer' %}
+        <button class="tab-button" onclick="showTab('orders', this)">
+          <i class="ri-file-list-line"></i> Мои заказы
+        </button>
+      {% endif %}
+    </div>
+
+    {% if profile_user.user_type == 'performer' %}
+      <!-- Таб Портфолио -->
+      <div id="portfolio" class="tab-content active">
+        <div class="portfolio-grid">
+          {% for photo in profile_user.portfolio.all %}
+            <div class="portfolio-item" onclick="openPhotoModal('{{ photo.image.url }}')">
+              <img src="{{ photo.image.url }}" alt="Портфолио {{ forloop.counter }}">
+              {% if is_own_profile %}
+                <form action="{% url 'main:delete_portfolio_photo' photo.id %}" method="POST" class="delete-photo" onclick="event.stopPropagation()">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-icon delete">
+                    <i class="ri-delete-bin-line"></i>
+                  </button>
+                </form>
+              {% endif %}
+            </div>
+          {% empty %}
+            <div class="empty-state">
+              <i class="ri-image-line"></i>
+              <h3>Портфолио пусто</h3>
+              <p>Добавьте фотографии своих работ</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Таб Тарифы -->
+      <div id="tariffs" class="tab-content">
+        <div class="tariff-list">
+          {% for tariff in tariffs %}
+            <div class="tariff-card">
+              <h4>{{ tariff.name }}</h4>
+              <div class="tariff-price">от {{ tariff.price }} ₸</div>
+              {% if tariff.description %}
+                <div class="tariff-description">{{ tariff.description }}</div>
+              {% endif %}
+            </div>
+          {% empty %}
+            <div class="empty-state">
+              <i class="ri-money-dollar-circle-line"></i>
+              <h3>Тарифы не добавлены</h3>
+              <p>Добавьте свои тарифы для клиентов</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Таб Отзывы -->
+      <div id="reviews" class="tab-content">
+        <div class="reviews-list">
+          {% for review in profile_user.reviews_received.all %}
+            <div class="review-card">
+              <div class="review-header">
+                <div>
+                  <div class="reviewer-name">{{ review.from_user.get_full_name }}</div>
+                  <div class="review-date">{{ review.created_at|date:"d.m.Y" }}</div>
+                </div>
+                <div class="review-rating">
+                  {% for i in "12345"|make_list %}
+                    {% if forloop.counter <= review.rating %}
+                      <i class="ri-star-fill"></i>
+                    {% else %}
+                      <i class="ri-star-line"></i>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+              <p class="review-text">{{ review.comment }}</p>
+            </div>
+          {% empty %}
+            <div class="empty-state">
+              <i class="ri-star-line"></i>
+              <h3>Пока нет отзывов</h3>
+              <p>Отзывы появятся после выполнения заказов</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if is_own_profile and user.user_type == 'performer' %}
+      <!-- Таб Мои заказы -->
+      <div id="orders" class="tab-content">
+        <div class="orders-grid">
+          {% if active_orders and active_orders|length > 0 %}
+            {% for order in active_orders %}
+              <div class="order-card">
+                <div class="order-header">
+                  <div class="request-title">
+                    {{ order.title }}
+                    <div style="font-size: 0.9rem; color: #666; margin-top: 4px;">
+                      {{ order.get_event_type_display }} — {{ order.event_date|date:"d.m.Y" }}
+                    </div>
+                  </div>
+                  <span class="request-status {{ order.status }}">{{ order.get_status_display }}</span>
+                </div>
+                <div class="order-details">
+                  <p><i class="ri-map-pin-line"></i> {{ order.city }}</p>
+                  <p><i class="ri-money-dollar-circle-line"></i> Бюджет: {{ order.budget_min }} - {{ order.budget_max }} ₸</p>
+                </div>
+                <div class="order-actions">
+                  <a href="{% url 'main:order_detail' order.id %}" class="btn outline">Подробнее</a>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="empty-state">
+              <i class="ri-file-list-line"></i>
+              <h3>У вас пока нет активных заказов</h3>
+              <p>Здесь будут отображаться ваши текущие заказы</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Модальное окно для просмотра фото -->
+<div id="photo-modal" class="photo-viewer-modal">
+  <div class="photo-viewer-content">
+    <button class="photo-viewer-close">&times;</button>
+    <img src="" alt="Просмотр фото" class="photo-viewer-img">
+  </div>
+</div>
+
+<script>
+  // Глобальная переменная для отслеживания состояния модального окна
+  let photoViewerOpen = false;
+
+  function showTab(tabName, element) {
+    // Скрываем все табы
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(content => content.classList.remove('active'));
+    
+    // Убираем активный класс со всех кнопок
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(button => button.classList.remove('active'));
+    
+    // Показываем нужный таб
+    document.getElementById(tabName).classList.add('active');
+    
+    // Добавляем активный класс к кнопке
+    if (element) {
+      element.classList.add('active');
+    }
+  }
+
+  function openPhotoModal(imageUrl) {
+    // Проверяем, не открыто ли уже модальное окно
+    if (photoViewerOpen) {
+      return; // Не открываем, если уже открыто
+    }
+
+    const modal = document.getElementById('photo-modal');
+    const modalImg = modal.querySelector('.photo-viewer-img');
+    const closeButton = modal.querySelector('.photo-viewer-close');
+
+    // Устанавливаем правильное изображение
+    modalImg.src = imageUrl;
+    modalImg.alt = 'Просмотр фото';
+    
+    // Показываем модальное окно
+    modal.style.display = 'flex';
+    photoViewerOpen = true;
+
+    // Функция закрытия
+    function closePhotoViewer() {
+      modal.style.display = 'none';
+      // Очищаем src для экономии памяти
+      modalImg.src = '';
+      photoViewerOpen = false;
+      // Удаляем обработчик Escape
+      document.removeEventListener('keydown', handleEscape);
+    }
+
+    // Обработчики событий
+    closeButton.onclick = closePhotoViewer;
+    
+    modal.onclick = function(event) {
+      if (event.target === modal) {
+        closePhotoViewer();
+      }
+    };
+
+    // Закрытие по клавише Escape
+    function handleEscape(event) {
+      if (event.key === 'Escape') {
+        closePhotoViewer();
+      }
+    }
+    
+    document.addEventListener('keydown', handleEscape);
+  }
+
+  // Инициализация при загрузке страницы
+  document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('photo-modal');
+    if (modal) {
+      const modalImg = modal.querySelector('.photo-viewer-img');
+      
+      // Убеждаемся, что модальное окно скрыто при загрузке
+      modal.style.display = 'none';
+      photoViewerOpen = false;
+      if (modalImg) {
+        modalImg.src = '';
+      }
+    }
+  });
+</script>
+{% endblock %} 

@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Той со звездой - платформа для поиска профессиональных исполнителей для вашего мероприятия">
+    <meta name="keywords" content="свадьба, фотограф, видеограф, ведущий, музыканты, организация мероприятий">
+    <meta name="theme-color" content="#4070f4">
+    <title>{% block title %}Той со звездой{% endblock %}</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/mobile.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/mobile-menu.css' %}?v=19">
+    
+    <!-- Touch device styles -->
+    <style>
+      @media (pointer: coarse) {
+        .mobile-menu-toggle {
+          min-width: 24px;
+          min-height: 24px;
+        }
+      }
+    </style>
+
+    <link rel="icon" type="image/jpeg" href="{% static 'images/favicon.jpg' %}?v=2">
+    <link rel="shortcut icon" type="image/jpeg" href="{% static 'images/favicon.jpg' %}?v=2">
+    <link rel="apple-touch-icon" href="{% static 'images/favicon.jpg' %}?v=2">
+    {% block extra_css %}{% endblock %}
+    
+    <!-- Scripts -->
+    <script src="{% static 'js/responsive.js' %}?v=3"></script>
+    <script src="{% static 'js/mobile-menu.js' %}?v=5"></script>
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="logo">Той со звездой</div>
+      <nav class="nav desktop-nav">
+        <a href="{% url 'main:index' %}" class="nav-link">
+          <i class="ri-home-line"></i>
+          <span>Главная</span>
+        </a>
+        <a href="{% url 'main:catalog' %}" class="nav-link">
+          <i class="ri-group-line"></i>
+          <span>Исполнители</span>
+        </a>
+        {% if user.is_authenticated %}
+          {% if user.user_type == 'customer' %}
+            <a href="{% url 'main:dashboard' %}#create-order" class="nav-link">
+              <i class="ri-add-circle-line"></i>
+              <span>Создать заявку</span>
+            </a>
+          {% endif %}
+          <div class="nav-dropdown">
+            <button class="nav-dropdown-toggle" type="button">
+              <div class="user-info">
+                {% if user.profile_photo %}
+                  <img src="{{ user.profile_photo.url }}" alt="{{ user.get_full_name }}" class="nav-avatar">
+                {% else %}
+                  <i class="ri-user-line"></i>
+                {% endif %}
+                <span>{{ user.get_full_name|default:user.phone_number }}</span>
+              </div>
+              <i class="ri-arrow-down-s-line"></i>
+            </button>
+            <div class="nav-dropdown-menu">
+              <a href="{% url 'main:dashboard' %}">
+                <i class="ri-dashboard-line"></i>
+                <span>Личный кабинет</span>
+              </a>
+              <a href="{% url 'main:logout' %}">
+                <i class="ri-logout-box-line"></i>
+                <span>Выйти</span>
+              </a>
+            </div>
+          </div>
+        {% else %}
+          <a href="{% url 'main:auth' %}" class="nav-link auth-link">
+            <i class="ri-login-box-line"></i>
+            <span>Войти по номеру телефона</span>
+          </a>
+        {% endif %}
+      </nav>
+      <button class="mobile-menu-toggle" aria-label="Открыть меню">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+  
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-content">
+            <nav class="mobile-nav">
+                <a href="{% url 'main:index' %}" class="mobile-nav-link">
+                    <i class="ri-home-line"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="{% url 'main:catalog' %}" class="mobile-nav-link">
+                    <i class="ri-group-line"></i>
+                    <span>Исполнители</span>
+                </a>
+                {% if user.is_authenticated %}
+                    {% if user.user_type == 'customer' %}
+                        <a href="{% url 'main:dashboard' %}#create-order" class="mobile-nav-link">
+                            <i class="ri-add-circle-line"></i>
+                            <span>Создать заявку</span>
+                        </a>
+                    {% endif %}
+                    <div class="mobile-nav-dropdown">
+                        <button class="mobile-nav-dropdown-toggle">
+                            <div class="user-info">
+                                {% if user.profile_photo %}
+                                    <img src="{{ user.profile_photo.url }}" alt="{{ user.get_full_name }}" class="nav-avatar">
+                                {% else %}
+                                    <i class="ri-user-line"></i>
+                                {% endif %}
+                                <span>{{ user.get_full_name|default:user.phone_number }}</span>
+                            </div>
+                            <i class="ri-arrow-down-s-line"></i>
+                        </button>
+                        <div class="mobile-nav-dropdown-menu">
+                            <a href="{% url 'main:dashboard' %}" class="mobile-nav-link">
+                                <i class="ri-dashboard-line"></i>
+                                <span>Личный кабинет</span>
+                            </a>
+                            <a href="{% url 'main:logout' %}" class="mobile-nav-link">
+                                <i class="ri-logout-box-line"></i>
+                                <span>Выйти</span>
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'main:auth' %}" class="mobile-nav-link auth-link">
+                        <i class="ri-login-box-line"></i>
+                        <span>Войти по номеру телефона</span>
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+
+
+
+    <main class="main">
+        {% if messages %}
+            <div class="container">
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message-alert {{ message.tags }}">
+                            {{ message }}
+                            <button class="close-message" onclick="this.parentElement.remove()">
+                                <i class="ri-close-line"></i>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>О нас</h3>
+                    <p>Той со звездой - платформа для поиска профессиональных исполнителей для вашего мероприятия.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <p>Email: <a href="mailto:miras.abildin@bk.ru">miras.abildin@bk.ru</a></p>
+                    <p>Телефон: <a href="tel:+77754184629">+7 (775)-418-46-29</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Соцсети</h3>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/_miras_event_/" target="_blank"><i class="ri-instagram-line"></i></a>
+                        <a href="https://www.tiktok.com/@miras_abildin_?_t=ZM-8yOktSAtIhi&_r=1" target="_blank"><i class="ri-tiktok-line"></i></a>
+                        <a href="https://wa.me/77754184629" target="_blank">
+                            <i class="ri-whatsapp-line"></i>
+                        </a>  
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Той со звездой. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{% static 'js/main.js' %}?v=20"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 

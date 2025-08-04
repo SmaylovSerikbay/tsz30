@@ -1,0 +1,1598 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог исполнителей — Той со звездой</title>
+  <link rel="icon" type="image/jpeg" href="{% static 'images/favicon.jpg' %}">
+      <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/mobile-menu.css' %}?v=19">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  
+  <!-- Load JavaScript files early -->
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/mobile-menu.js' %}"></script>
+  
+  <!-- Touch device styles -->
+  <style>
+    @media (pointer: coarse) {
+      .mobile-menu-toggle {
+        min-width: 30px;
+        min-height: 34px;
+      }
+    }
+  </style>
+  <style>
+    :root {
+      --primary: #D4AF37;
+      --primary-dark: #B4941F;
+      --primary-light: #FFF8E7;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      line-height: 1.6;
+    }
+
+    .main {
+      padding-top: 80px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    .header {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+    }
+
+    .header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .desktop-nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .desktop-nav .nav-link {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .desktop-nav .nav-link:hover {
+      color: var(--primary);
+    }
+
+    /* Catalog Layout */
+    .catalog-header {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .catalog-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+
+    .catalog-subtitle {
+      color: var(--gray-600);
+      font-size: 1.125rem;
+    }
+
+    /* Filters */
+    .filters-bar {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .filters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .filters-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filters-title i {
+      color: var(--primary);
+    }
+
+    .clear-filters {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .clear-filters:hover {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .filters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      align-items: end;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .filter-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-label i {
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .filter-input {
+      padding: 12px 16px;
+      border: 1px solid var(--gray-300);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      color: var(--gray-900);
+      background: white;
+      transition: all 0.2s;
+      width: 100%;
+    }
+
+    .filter-input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+
+    .filter-radio {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--gray-600);
+      transition: all 0.2s;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+    }
+
+    .radio-option:hover {
+      color: var(--gray-900);
+      background: var(--gray-50);
+      border-color: var(--gray-200);
+    }
+
+    .radio-option input[type="radio"] {
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+    }
+
+    .radio-option input[type="radio"]:checked + span {
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .price-range {
+      display: flex;
+      gap: 8px;
+    }
+
+    .price-range .filter-input {
+      flex: 1;
+    }
+
+    .rating-stars {
+      color: var(--primary);
+      font-size: 0.875rem;
+    }
+
+    /* Performers Grid */
+    .performers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .performer-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .performer-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .performer-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .performer-card:hover .performer-image {
+      transform: scale(1.02);
+    }
+
+    .performer-content {
+      padding: 16px;
+    }
+
+    .performer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .performer-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      line-height: 1.3;
+    }
+
+    .performer-type {
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .performer-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 8px;
+      background: var(--gray-50);
+      border-radius: 6px;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      color: var(--gray-600);
+      font-size: 0.8rem;
+    }
+
+    .stat-item i {
+      color: var(--primary);
+    }
+
+    .performer-price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 12px;
+    }
+
+    .performer-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary-light);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 40px;
+    }
+
+    .pagination-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--gray-600);
+      font-weight: 500;
+      transition: all 0.2s;
+      border: 1px solid var(--gray-200);
+      background: white;
+    }
+
+    .pagination-item:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .pagination-item.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--gray-600);
+    }
+
+    .empty-state i {
+      font-size: 48px;
+      color: var(--gray-300);
+      margin-bottom: 16px;
+    }
+
+    .empty-state h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+
+    /* Мобильное меню стили перенесены в mobile-menu.css */
+
+    /* Responsive styles */
+    @media (max-width: 1024px) and (min-width: 778px) {
+      .performers-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+        background-color: rgba(255, 0, 0, 0.1) !important; /* ТЕСТОВЫЙ СТИЛЬ */
+      }
+      
+      .performer-content {
+        padding: 18px !important;
+      }
+      
+      .performer-image {
+        height: 180px !important;
+      }
+      
+      .performer-name {
+        font-size: 1.1rem !important;
+      }
+      
+      .performer-type {
+        font-size: 0.85rem !important;
+      }
+      
+      .performer-stats {
+        padding: 10px !important;
+        margin-bottom: 15px !important;
+      }
+      
+      .stat-item {
+        font-size: 0.85rem !important;
+      }
+      
+      .performer-price {
+        font-size: 1.2rem !important;
+        margin-bottom: 15px !important;
+      }
+      
+      .btn {
+        padding: 10px 16px !important;
+        font-size: 0.9rem !important;
+      }
+    }
+
+    @media (max-width: 777px) and (min-width: 550px) {
+      .performers-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        background-color: rgba(0, 255, 0, 0.1) !important; /* ТЕСТОВЫЙ СТИЛЬ - ЗЕЛЕНЫЙ */
+      }
+      
+      .performer-content {
+        padding: 12px;
+      }
+      
+      .performer-image {
+        height: 130px;
+      }
+      
+      .performer-name {
+        font-size: 0.95rem;
+      }
+      
+      .performer-type {
+        font-size: 0.75rem;
+      }
+      
+      .performer-stats {
+        padding: 6px;
+        margin-bottom: 10px;
+      }
+      
+      .stat-item {
+        font-size: 0.75rem;
+      }
+      
+      .performer-price {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+      
+      .btn {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .desktop-nav {
+        display: none !important;
+    }
+
+    .filters-bar {
+        padding: 20px;
+      }
+      }
+
+    @media (max-width: 464px) {
+      .performers-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        background-color: rgba(255, 0, 255, 0.1) !important; /* ТЕСТОВЫЙ СТИЛЬ - МАГЕНТА */
+      }
+      
+      .performer-content {
+        padding: 10px;
+      }
+      
+      .performer-image {
+        height: 120px;
+      }
+      
+      .performer-name {
+        font-size: 0.9rem;
+      }
+      
+      .performer-type {
+        font-size: 0.7rem;
+      }
+
+      .performer-stats {
+        padding: 5px;
+        margin-bottom: 8px;
+      }
+      
+      .stat-item {
+        font-size: 0.7rem;
+      }
+      
+      .performer-price {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+      }
+      
+      .btn {
+        padding: 5px 8px;
+        font-size: 0.7rem;
+      }
+    }
+
+    /* Улучшение доступности для сенсорных устройств */
+    @media (pointer: coarse) {
+      .mobile-menu-toggle {
+        min-height: 30px;
+        min-width: 34px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .filters-bar {
+        padding: 16px;
+      }
+
+      .filters-grid {
+        gap: 12px;
+      }
+
+      .filter-input {
+        padding: 10px 12px;
+        font-size: 0.875rem;
+      }
+
+      /* Дополнительная мобильная адаптация */
+      .main {
+        padding-top: 60px;
+      }
+
+      .container {
+        padding: 0 8px;
+      }
+
+      .header .container {
+        padding: 8px;
+        height: 60px;
+      }
+
+      .logo {
+        font-size: 1.1rem;
+      }
+
+      .catalog-container {
+        gap: 12px;
+        padding: 0;
+      }
+
+      .filters-sidebar {
+        width: 100%;
+        max-width: none;
+        padding: 12px;
+      }
+
+      .mobile-filters-toggle {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+      }
+
+      .mobile-filters-toggle i {
+        font-size: 16px;
+      }
+
+      .catalog-grid {
+        gap: 12px;
+      }
+
+      .performer-image {
+        height: 100px;
+      }
+
+      .performer-content {
+        padding: 8px;
+      }
+
+      .performer-name {
+        font-size: 0.85rem;
+      }
+
+      .performer-type {
+        font-size: 0.7rem;
+      }
+
+      .performer-meta {
+        font-size: 0.7rem;
+        gap: 4px;
+      }
+
+      .performer-price {
+        font-size: 0.8rem;
+      }
+
+      .performer-actions .btn {
+        padding: 4px 6px;
+        font-size: 0.7rem;
+      }
+
+      .page-title {
+        font-size: 1.5rem;
+      }
+
+      .page-subtitle {
+        font-size: 0.9rem;
+      }
+
+      .sort-select {
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+
+      .filter-section h3 {
+        font-size: 0.9rem;
+      }
+
+      .filter-option,
+      .rating-option {
+        font-size: 0.85rem;
+        padding: 6px 0;
+      }
+
+      .price-input {
+        padding: 8px;
+        font-size: 0.85rem;
+      }
+
+      .catalog-header {
+        padding: 16px;
+      }
+
+      .catalog-title {
+        font-size: 1.3rem;
+      }
+
+      .performers-grid {
+        gap: 12px;
+      }
+
+      .performer-stats {
+        gap: 6px;
+      }
+
+      .performer-actions {
+        gap: 8px;
+      }
+    }
+
+      .radio-option {
+        padding: 6px 8px;
+        font-size: 0.8rem;
+        min-width: 100px;
+      }
+
+      .catalog-header {
+        padding: 20px;
+      }
+
+      .catalog-title {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">Той со звездой</div>
+      <nav class="nav desktop-nav">
+        <a href="{% url 'main:index' %}" class="nav-link">
+          <i class="ri-home-line"></i>
+          <span>Главная</span>
+        </a>
+        <a href="{% url 'main:catalog' %}" class="nav-link">
+          <i class="ri-group-line"></i>
+          <span>Исполнители</span>
+        </a>
+        {% if user.is_authenticated %}
+          {% if user.user_type == 'customer' %}
+            <a href="{% url 'main:dashboard' %}#create-order" class="nav-link">
+              <i class="ri-add-circle-line"></i>
+              <span>Создать заявку</span>
+            </a>
+          {% endif %}
+          <div class="nav-dropdown">
+            <button class="nav-dropdown-toggle">
+              <div class="user-info">
+                {% if user.profile_photo %}
+                  <img src="{{ user.profile_photo.url }}" alt="{{ user.get_full_name }}" class="nav-avatar">
+                {% else %}
+                  <i class="ri-user-line"></i>
+                {% endif %}
+                <span>{{ user.get_full_name|default:user.phone_number }}</span>
+              </div>
+              <i class="ri-arrow-down-s-line"></i>
+            </button>
+            <div class="nav-dropdown-menu">
+              <a href="{% url 'main:dashboard' %}">
+                <i class="ri-dashboard-line"></i>
+                <span>Личный кабинет</span>
+              </a>
+              <a href="{% url 'main:logout' %}">
+                <i class="ri-logout-box-line"></i>
+                <span>Выйти</span>
+              </a>
+            </div>
+          </div>
+        {% else %}
+          <a href="{% url 'main:auth' %}" class="nav-link auth-link">
+            <i class="ri-login-box-line"></i>
+            <span>Войти по номеру телефона</span>
+          </a>
+        {% endif %}
+      </nav>
+      <button class="mobile-menu-toggle" aria-label="Открыть меню">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <div class="mobile-menu-content">
+      <nav class="mobile-nav">
+        <a href="{% url 'main:index' %}" class="mobile-nav-link">
+          <i class="ri-home-line"></i>
+          <span>Главная</span>
+        </a>
+        <a href="{% url 'main:catalog' %}" class="mobile-nav-link">
+          <i class="ri-user-star-line"></i>
+          <span>Исполнители</span>
+        </a>
+        {% if user.is_authenticated %}
+          {% if user.user_type == 'customer' %}
+            <a href="{% url 'main:dashboard' %}#create-order" class="mobile-nav-link">
+              <i class="ri-add-circle-line"></i>
+              <span>Создать заявку</span>
+            </a>
+          {% endif %}
+          <div class="mobile-nav-dropdown">
+            <button class="mobile-nav-dropdown-toggle">
+              <div class="user-info">
+                {% if user.profile_photo %}
+                  <img src="{{ user.profile_photo.url }}" alt="{{ user.get_full_name }}" class="nav-avatar">
+                {% else %}
+                  <i class="ri-user-line"></i>
+                {% endif %}
+                <span>{{ user.get_full_name|default:user.phone_number }}</span>
+              </div>
+              <i class="ri-arrow-down-s-line"></i>
+            </button>
+            <div class="mobile-nav-dropdown-menu">
+              <a href="{% url 'main:dashboard' %}" class="mobile-nav-link">
+                <i class="ri-dashboard-line"></i>
+                <span>Личный кабинет</span>
+              </a>
+              <a href="{% url 'main:logout' %}" class="mobile-nav-link">
+                <i class="ri-logout-box-line"></i>
+                <span>Выйти</span>
+              </a>
+            </div>
+          </div>
+        {% else %}
+          <a href="{% url 'main:auth' %}" class="mobile-nav-link auth-link">
+            <i class="ri-login-box-line"></i>
+            <span>Войти по номеру телефона</span>
+          </a>
+        {% endif %}
+      </nav>
+    </div>
+  </div>
+
+  <main class="main">
+    <div class="container">
+      <!-- Catalog Header -->
+      <div class="catalog-header">
+        <h1 class="catalog-title">Каталог исполнителей</h1>
+        <p class="catalog-subtitle">Найдите идеального исполнителя для вашего мероприятия</p>
+      </div>
+
+      <!-- Desktop Filters -->
+      <div class="filters-horizontal-bar desktop-filters">
+        <form method="get" id="filters-form" class="filters-horizontal-form">
+          <!-- Категории -->
+          <select name="category" class="chip-input category-chip" onchange="this.form.submit()">
+            <option value="all" {% if not current_filters.category or current_filters.category == 'all' %}selected{% endif %}>Все</option>
+                            {% for service_type in categories %}
+                  <option value="{{ service_type.code }}" {% if current_filters.category == service_type.code %}selected{% endif %}>{{ service_type.name }}</option>
+                {% endfor %}
+          </select>
+
+          <!-- Город -->
+          <select name="city" class="chip-input city-chip" onchange="this.form.submit()">
+            <option value="">Город</option>
+            {% for city in cities %}
+              <option value="{{ city.name }}" {% if current_filters.city == city.name %}selected{% endif %}>{{ city.name }}</option>
+            {% endfor %}
+          </select>
+
+          <!-- Цена -->
+          <div class="chip-input-group">
+            <input type="number" name="min_price" class="chip-input price-input" placeholder="От" value="{{ current_filters.min_price }}" onchange="this.form.submit()">
+            <span class="chip-input-sep">–</span>
+            <input type="number" name="max_price" class="chip-input price-input" placeholder="До" value="{{ current_filters.max_price }}" onchange="this.form.submit()">
+          </div>
+
+          <!-- Рейтинг -->
+          <select name="rating" class="chip-input rating-chip" onchange="this.form.submit()">
+            <option value="">★</option>
+            <option value="4" {% if current_filters.rating == '4' %}selected{% endif %}>4★</option>
+            <option value="3" {% if current_filters.rating == '3' %}selected{% endif %}>3★</option>
+          </select>
+
+          <!-- Дата -->
+          <input type="date" name="date" class="chip-input date-chip" value="{% if current_filters.date and current_filters.date != 'None' %}{{ current_filters.date }}{% endif %}" onchange="this.form.submit()">
+
+          <!-- Сортировка -->
+          <select name="sort" class="chip-input sort-chip" onchange="this.form.submit()">
+            <option value="rating" {% if current_filters.sort == 'rating' %}selected{% endif %}>Рейтинг</option>
+            <option value="price_low" {% if current_filters.sort == 'price_low' %}selected{% endif %}>Дешевле</option>
+            <option value="price_high" {% if current_filters.sort == 'price_high' %}selected{% endif %}>Дороже</option>
+            <option value="newest" {% if current_filters.sort == 'newest' %}selected{% endif %}>Новые</option>
+          </select>
+
+          <!-- Сбросить -->
+          <a href="{% url 'main:catalog' %}" class="chip reset-chip">Сбросить</a>
+        </form>
+      </div>
+
+      <!-- Mobile Filters Button -->
+      <div class="mobile-filters-container">
+        <button class="mobile-filters-btn" onclick="toggleMobileFilters()">
+          <i class="ri-filter-3-line"></i>
+          <span>Фильтры</span>
+          <i class="ri-arrow-down-s-line"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Filters Modal -->
+      <div class="mobile-filters-modal" id="mobileFiltersModal">
+        <div class="mobile-filters-overlay" onclick="toggleMobileFilters()"></div>
+        <div class="mobile-filters-content">
+          <div class="mobile-filters-header">
+            <h3>Фильтры</h3>
+            <button class="mobile-filters-close" onclick="toggleMobileFilters()">
+              <i class="ri-close-line"></i>
+            </button>
+          </div>
+          <form method="get" id="mobile-filters-form" class="mobile-filters-form">
+            <!-- Категории -->
+            <div class="mobile-filter-group">
+              <label>Категория</label>
+              <select name="category" class="mobile-filter-input">
+                <option value="all" {% if not current_filters.category or current_filters.category == 'all' %}selected{% endif %}>Все</option>
+                {% for service_type in categories %}
+                  <option value="{{ service_type.code }}" {% if current_filters.category == service_type.code %}selected{% endif %}>{{ service_type.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Город -->
+            <div class="mobile-filter-group">
+              <label>Город</label>
+              <select name="city" class="mobile-filter-input">
+                <option value="">Выберите город</option>
+                {% for city in cities %}
+                  <option value="{{ city.name }}" {% if current_filters.city == city.name %}selected{% endif %}>{{ city.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Цена -->
+            <div class="mobile-filter-group">
+              <label>Цена</label>
+              <div class="mobile-price-inputs">
+                <input type="number" name="min_price" class="mobile-filter-input" placeholder="От" value="{{ current_filters.min_price }}">
+                <span class="mobile-price-sep">–</span>
+                <input type="number" name="max_price" class="mobile-filter-input" placeholder="До" value="{{ current_filters.max_price }}">
+              </div>
+            </div>
+
+            <!-- Рейтинг -->
+            <div class="mobile-filter-group">
+              <label>Рейтинг</label>
+              <select name="rating" class="mobile-filter-input">
+                <option value="">Любой</option>
+                <option value="4" {% if current_filters.rating == '4' %}selected{% endif %}>4★ и выше</option>
+                <option value="3" {% if current_filters.rating == '3' %}selected{% endif %}>3★ и выше</option>
+              </select>
+            </div>
+
+            <!-- Дата -->
+            <div class="mobile-filter-group">
+              <label>Дата</label>
+              <input type="date" name="date" class="mobile-filter-input" value="{% if current_filters.date and current_filters.date != 'None' %}{{ current_filters.date }}{% endif %}">
+            </div>
+
+            <!-- Сортировка -->
+            <div class="mobile-filter-group">
+              <label>Сортировка</label>
+              <select name="sort" class="mobile-filter-input">
+                <option value="rating" {% if current_filters.sort == 'rating' %}selected{% endif %}>По рейтингу</option>
+                <option value="price_low" {% if current_filters.sort == 'price_low' %}selected{% endif %}>Дешевле</option>
+                <option value="price_high" {% if current_filters.sort == 'price_high' %}selected{% endif %}>Дороже</option>
+                <option value="newest" {% if current_filters.sort == 'newest' %}selected{% endif %}>Новые</option>
+              </select>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="mobile-filters-actions">
+              <button type="button" class="mobile-filter-btn mobile-filter-apply" onclick="applyMobileFilters()">Применить</button>
+              <a href="{% url 'main:catalog' %}" class="mobile-filter-btn mobile-filter-reset">Сбросить</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <style>
+             /* Desktop Filters */
+             .filters-horizontal-bar {
+         background: white;
+         border-radius: 12px;
+         box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+         padding: 16px 20px;
+         margin-bottom: 24px;
+         overflow-x: auto;
+       }
+
+       /* Mobile Filters */
+       .mobile-filters-container {
+         display: none;
+         margin-bottom: 16px;
+       }
+
+       .mobile-filters-btn {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         width: 100%;
+         padding: 12px 16px;
+         background: white;
+         border: 1px solid var(--gray-200);
+         border-radius: 8px;
+         font-size: 0.9rem;
+         font-weight: 500;
+         color: var(--gray-700);
+         cursor: pointer;
+         transition: all 0.2s;
+       }
+
+       .mobile-filters-btn:hover {
+         border-color: var(--primary);
+         color: var(--primary);
+       }
+
+       .mobile-filters-btn i {
+         font-size: 1.1rem;
+       }
+
+       .mobile-filters-modal {
+         display: none;
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         z-index: 1000;
+       }
+
+       .mobile-filters-overlay {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: rgba(0, 0, 0, 0.5);
+         backdrop-filter: blur(4px);
+       }
+
+       .mobile-filters-content {
+         position: absolute;
+         bottom: 0;
+         left: 0;
+         width: 100%;
+         background: white;
+         border-radius: 16px 16px 0 0;
+         padding: 20px;
+         max-height: 80vh;
+         overflow-y: auto;
+         transform: translateY(100%);
+         transition: transform 0.3s ease;
+       }
+
+       .mobile-filters-modal.active {
+         display: block;
+       }
+
+       .mobile-filters-modal.active .mobile-filters-content {
+         transform: translateY(0);
+       }
+
+       .mobile-filters-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 20px;
+         padding-bottom: 12px;
+         border-bottom: 1px solid var(--gray-200);
+       }
+
+       .mobile-filters-header h3 {
+         font-size: 1.1rem;
+         font-weight: 600;
+         color: var(--gray-900);
+         margin: 0;
+       }
+
+       .mobile-filters-close {
+         background: none;
+         border: none;
+         font-size: 1.5rem;
+         color: var(--gray-500);
+         cursor: pointer;
+         padding: 4px;
+         border-radius: 4px;
+         transition: color 0.2s;
+       }
+
+       .mobile-filters-close:hover {
+         color: var(--gray-700);
+       }
+
+       .mobile-filters-form {
+         display: flex;
+         flex-direction: column;
+         gap: 16px;
+       }
+
+       .mobile-filter-group {
+         display: flex;
+         flex-direction: column;
+         gap: 6px;
+       }
+
+       .mobile-filter-group label {
+         font-size: 0.9rem;
+         font-weight: 500;
+         color: var(--gray-700);
+       }
+
+       .mobile-filter-input {
+         padding: 10px 12px;
+         border: 1px solid var(--gray-200);
+         border-radius: 6px;
+         font-size: 0.9rem;
+         background: white;
+         color: var(--gray-900);
+         transition: border-color 0.2s;
+       }
+
+       .mobile-filter-input:focus {
+         border-color: var(--primary);
+         outline: none;
+       }
+
+       .mobile-price-inputs {
+         display: flex;
+         align-items: center;
+         gap: 8px;
+       }
+
+       .mobile-price-sep {
+         color: var(--gray-400);
+         font-size: 0.9rem;
+       }
+
+       .mobile-filters-actions {
+         display: flex;
+         gap: 12px;
+         margin-top: 20px;
+         padding-top: 16px;
+         border-top: 1px solid var(--gray-200);
+       }
+
+       .mobile-filter-btn {
+         flex: 1;
+         padding: 12px;
+         border-radius: 6px;
+         font-size: 0.9rem;
+         font-weight: 500;
+         text-decoration: none;
+         text-align: center;
+         transition: all 0.2s;
+         border: none;
+         cursor: pointer;
+       }
+
+       .mobile-filter-apply {
+         background: var(--primary);
+         color: white;
+       }
+
+       .mobile-filter-apply:hover {
+         background: var(--primary-dark);
+       }
+
+       .mobile-filter-reset {
+         background: var(--gray-100);
+         color: var(--gray-700);
+         border: 1px solid var(--gray-200);
+       }
+
+       .mobile-filter-reset:hover {
+         background: var(--gray-200);
+       }
+       .filters-horizontal-form {
+         display: flex;
+         flex-wrap: nowrap;
+         gap: 12px;
+         align-items: center;
+         min-width: 0;
+       }
+       .filter-chips {
+         display: flex;
+         gap: 8px;
+         flex-wrap: wrap;
+         min-width: 0;
+       }
+       .chip {
+         display: inline-flex;
+         align-items: center;
+         padding: 6px 12px;
+         border-radius: 6px;
+         background: var(--gray-100);
+         color: var(--gray-700);
+         font-size: 0.875rem;
+         font-weight: 500;
+         border: none;
+         cursor: pointer;
+         transition: background 0.15s, color 0.15s;
+         outline: none;
+         white-space: nowrap;
+         min-width: 0;
+       }
+       .chip.active, .chip:active, .chip:focus {
+         background: var(--primary);
+         color: #fff;
+       }
+       .chip.reset-chip {
+         background: var(--gray-200);
+         color: var(--primary);
+         font-weight: 600;
+         margin-left: 8px;
+         padding: 6px 10px;
+       }
+       .chip.reset-chip:hover {
+         background: var(--primary-light);
+         color: var(--primary-dark);
+       }
+       .chip-input, .chip-input-group input[type='number'], .chip-input-group input[type='date'] {
+         border: 1px solid var(--gray-200);
+         border-radius: 6px;
+         padding: 6px 10px;
+         font-size: 0.875rem;
+         background: var(--gray-100);
+         color: var(--gray-900);
+         outline: none;
+         min-width: 60px;
+         max-width: 100px;
+         transition: border 0.15s;
+         height: 32px;
+       }
+       .chip-input:focus {
+         border-color: var(--primary);
+         background: #fff;
+       }
+       .chip-input-group {
+         display: flex;
+         align-items: center;
+         gap: 4px;
+       }
+       .chip-input-sep {
+         color: var(--gray-400);
+         font-size: 0.875rem;
+         margin: 0 2px;
+       }
+       .category-chip {
+         min-width: 100px;
+         max-width: 140px;
+       }
+       .city-chip {
+         min-width: 80px;
+         max-width: 120px;
+       }
+       .price-input {
+         min-width: 50px;
+         max-width: 80px;
+       }
+       .rating-chip {
+         min-width: 50px;
+         max-width: 60px;
+       }
+       .date-chip {
+         min-width: 100px;
+         max-width: 120px;
+       }
+       .sort-chip {
+         min-width: 80px;
+         max-width: 120px;
+         margin-left: auto;
+       }
+             @media (max-width: 1024px) {
+         .filters-horizontal-form {
+           gap: 10px;
+         }
+         .chip, .chip-input {
+           font-size: 0.875rem;
+           padding: 6px 10px;
+         }
+       }
+
+       @media (max-width: 768px) {
+         .desktop-filters {
+           display: none;
+         }
+         
+         .mobile-filters-container {
+           display: block;
+         }
+       }
+       @media (max-width: 768px) {
+         .filters-horizontal-bar {
+           padding: 12px 16px;
+         }
+         .filters-horizontal-form {
+           flex-wrap: nowrap;
+           overflow-x: auto;
+           gap: 8px;
+           padding-bottom: 4px;
+         }
+         .chip, .chip-input {
+           font-size: 0.8rem;
+           padding: 5px 8px;
+           height: 28px;
+         }
+         .chip-input, .chip-input-group input[type='number'], .chip-input-group input[type='date'] {
+           min-width: 50px;
+           max-width: 70px;
+         }
+         .category-chip {
+           min-width: 80px;
+           max-width: 100px;
+         }
+         .city-chip {
+           min-width: 60px;
+           max-width: 80px;
+         }
+         .price-input {
+           min-width: 40px;
+           max-width: 60px;
+         }
+         .rating-chip {
+           min-width: 40px;
+           max-width: 50px;
+         }
+         .date-chip {
+           min-width: 80px;
+           max-width: 100px;
+         }
+         .sort-chip {
+           min-width: 70px;
+           max-width: 90px;
+         }
+         .chip.reset-chip {
+           padding: 5px 8px;
+           font-size: 0.8rem;
+         }
+       }
+       @media (max-width: 480px) {
+         .filters-horizontal-bar {
+           border-radius: 0;
+           margin: 0 -8px 12px -8px;
+           padding: 10px 12px;
+         }
+         .filters-horizontal-form {
+           gap: 6px;
+         }
+         .chip, .chip-input {
+           font-size: 0.75rem;
+           padding: 4px 6px;
+           height: 26px;
+         }
+         .chip-input, .chip-input-group input[type='number'], .chip-input-group input[type='date'] {
+           min-width: 40px;
+           max-width: 60px;
+         }
+         .category-chip {
+           min-width: 70px;
+           max-width: 90px;
+         }
+         .city-chip {
+           min-width: 50px;
+           max-width: 70px;
+         }
+         .price-input {
+           min-width: 35px;
+           max-width: 50px;
+         }
+         .rating-chip {
+           min-width: 35px;
+           max-width: 45px;
+         }
+         .date-chip {
+           min-width: 70px;
+           max-width: 90px;
+         }
+         .sort-chip {
+           min-width: 60px;
+           max-width: 80px;
+         }
+       }
+      </style>
+
+      <!-- Performers Grid -->
+      <div class="performers-grid">
+        {% for performer in performers %}
+        <div class="performer-card">
+          {% if performer.profile_photo %}
+            <img src="{{ performer.profile_photo.url }}" alt="Фото исполнителя" class="performer-image">
+          {% else %}
+            <img src="{% static 'images/default-avatar.jpg' %}" alt="Фото исполнителя" class="performer-image">
+          {% endif %}
+          <div class="performer-content">
+            <div class="performer-header">
+              <h3 class="performer-name">{{ performer.get_full_name }}</h3>
+            </div>
+            <div class="performer-type">
+              {% if performer.service_type %}
+                {% if performer.service_type.code == 'photo' %}
+                  <i class="ri-camera-line"></i>
+                {% elif performer.service_type.code == 'video' %}
+                  <i class="ri-video-line"></i>
+                {% elif performer.service_type.code == 'music' %}
+                  <i class="ri-music-2-line"></i>
+                {% elif performer.service_type.code == 'host' %}
+                  <i class="ri-mic-line"></i>
+                {% elif performer.service_type.code == 'dance' %}
+                  <i class="ri-emotion-happy-line"></i>
+                {% elif performer.service_type.code == 'restaurant' %}
+                  <i class="ri-restaurant-line"></i>
+                {% elif performer.service_type.code == 'makeup' %}
+                  <i class="ri-palette-line"></i>
+                {% elif performer.service_type.code == 'registry' %}
+                  <i class="ri-heart-line"></i>
+                {% elif performer.service_type.code == 'cottage' %}
+                  <i class="ri-home-line"></i>
+                {% elif performer.service_type.code == 'recreation_areas' %}
+                  <i class="ri-tree-line"></i>
+                {% elif performer.service_type.code == 'star' %}
+                  <i class="ri-star-line"></i>
+                {% elif performer.service_type.code == 'aphishe' %}
+                  <i class="ri-file-text-line"></i>
+                {% else %}
+                  <i class="ri-briefcase-line"></i>
+                {% endif %}
+                {{ performer.service_type.name }}
+              {% endif %}
+            </div>
+            <div class="performer-stats">
+              <div class="stat-item">
+                <i class="ri-star-fill"></i>
+                <span>{% if performer.avg_rating %}{{ performer.avg_rating|floatformat:1 }}{% else %}0.0{% endif %}</span>
+                {% if performer.reviews_count %}
+                  <small>({{ performer.reviews_count }})</small>
+                {% endif %}
+              </div>
+              <div class="stat-item">
+                <i class="ri-calendar-check-line"></i>
+                <span>{{ performer.completed_orders_count|default:"0" }} мероприятий</span>
+              </div>
+            </div>
+            {% with min_price=performer.tariffs.first.price|default:"0" %}
+            <div class="performer-price">от {{ min_price }} ₸</div>
+            {% endwith %}
+            <div class="performer-actions">
+              <a href="{% url 'main:view_profile' performer.id %}" class="btn btn-primary">Профиль</a>
+              {% if user.is_authenticated and user.user_type == 'customer' %}
+              <button onclick="if(typeof openBookingModal === 'function') { openBookingModal('{{ performer.id }}'); } else { console.error('openBookingModal not found'); alert('Ошибка загрузки функции бронирования'); }" class="btn btn-outline" style="cursor: pointer;">Забронировать</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="empty-state" style="grid-column: 1 / -1;">
+          <i class="ri-search-line"></i>
+          <h3>По вашему запросу ничего не найдено</h3>
+          <p>Попробуйте изменить параметры фильтрации</p>
+          <a href="{% url 'main:catalog' %}" class="btn btn-outline" style="margin-top: 16px;">Сбросить фильтры</a>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Pagination -->
+      {% if page_obj.has_other_pages %}
+      <div class="pagination">
+        {% if page_obj.has_previous %}
+          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}" class="pagination-item">
+            <i class="ri-arrow-left-s-line"></i>
+            Назад
+          </a>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <span class="pagination-item active">{{ num }}</span>
+          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}" class="pagination-item">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}" class="pagination-item">
+            Вперед
+            <i class="ri-arrow-right-s-line"></i>
+          </a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </main>
+
+  <!-- Booking Modal will be created dynamically by main.js -->
+
+  <script>
+    // Set minimum date for date input
+    document.addEventListener('DOMContentLoaded', function() {
+      const dateInput = document.querySelector('input[type="date"]');
+      if (dateInput) {
+        const today = new Date();
+        dateInput.min = today.toISOString().split('T')[0];
+        
+        // Check for None values
+        if (dateInput.value === 'None' || dateInput.value === '') {
+          dateInput.value = '';
+        }
+      }
+    });
+
+    // Mobile Filters Toggle
+    function toggleMobileFilters() {
+      const modal = document.getElementById('mobileFiltersModal');
+      const btn = document.querySelector('.mobile-filters-btn i:last-child');
+      
+      if (modal.classList.contains('active')) {
+        modal.classList.remove('active');
+        btn.style.transform = 'rotate(0deg)';
+      } else {
+        modal.classList.add('active');
+        btn.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    // Apply mobile filters
+    function applyMobileFilters() {
+      const form = document.getElementById('mobile-filters-form');
+      form.submit();
+    }
+
+    // Close mobile filters on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('mobileFiltersModal');
+        if (modal.classList.contains('active')) {
+          toggleMobileFilters();
+        }
+      }
+    });
+
+    // Booking Modal Function - uses main.js openBookingModal
+    console.log('Catalog page loaded, openBookingModal available:', typeof openBookingModal);
+    console.log('Window openBookingModal:', typeof window.openBookingModal);
+    console.log('Document ready state:', document.readyState);
+    
+    // Ensure openBookingModal is available globally
+    if (typeof window.openBookingModal === 'function') {
+      window.openBookingModal = window.openBookingModal;
+      console.log('openBookingModal is properly exported');
+    } else {
+      console.error('openBookingModal is not available');
+    }
+  </script>
+</body>
+</html> 
