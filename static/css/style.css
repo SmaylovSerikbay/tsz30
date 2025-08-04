@@ -3968,6 +3968,11 @@ select.form-input {
         gap: 10px;
     }
     
+    .portfolio-item {
+        max-width: 150px;
+        max-height: 150px;
+    }
+    
     /* Тарифы для мобильных */
     .tariff-list,
     .subscription-plans {
@@ -4263,6 +4268,11 @@ select.form-input {
     .portfolio-grid {
         grid-template-columns: 1fr;
         gap: 8px;
+    }
+    
+    .portfolio-item {
+        max-width: 120px;
+        max-height: 120px;
     }
     
     /* Формы для очень маленьких экранов */
@@ -4771,7 +4781,7 @@ select.form-input {
 /* Портфолио */
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 12px;
 }
 
@@ -4788,6 +4798,8 @@ select.form-input {
   background: #f8f9fa;
   cursor: pointer;
   transition: transform 0.3s ease;
+  max-width: 180px;
+  max-height: 180px;
 }
 
 .portfolio-item:hover {

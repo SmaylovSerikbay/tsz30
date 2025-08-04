@@ -9,6 +9,62 @@
   display: flex; /* Показываем обычные табы на десктопе */
 }
 
+/* Специальные стили для тарифов */
+#tariffs {
+  display: block;
+}
+
+/* Обеспечиваем видимость тарифов когда таб активен */
+#tariffs.tab-content.active {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Дополнительные гарантии для видимости тарифов */
+#tariffs.tab-content.active * {
+  visibility: visible !important;
+}
+
+#tariffs.tab-content.active .table-container {
+  display: block !important;
+  visibility: visible !important;
+}
+
+#tariffs.tab-content.active .data-table {
+  display: table !important;
+  visibility: visible !important;
+}
+
+#tariffs .table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+#tariffs .data-table {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+#tariffs .data-table th,
+#tariffs .data-table td {
+  padding: 12px 8px;
+  text-align: left;
+  border-bottom: 1px solid #e9ecef;
+}
+
+#tariffs .data-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #dee2e6;
+}
+
 /* Общие мобильные улучшения */
 @media (max-width: 768px) {
   /* Улучшенная типографика для мобильных */
@@ -1772,6 +1828,109 @@
     background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
+/* Мобильный дропдаун для табов */
+@media (max-width: 768px) {
+  .mobile-tabs-dropdown {
+    display: block;
+    margin-bottom: 20px;
+  }
+  
+  .tabs-header {
+    display: none;
+  }
+  
+  .mobile-tabs-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 16px 20px;
+    background: white;
+    border: 2px solid var(--primary-color);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mobile-tabs-toggle:hover {
+    background: var(--primary-light);
+    border-color: var(--primary-dark);
+  }
+  
+  .mobile-tabs-toggle i {
+    font-size: 20px;
+    color: var(--primary-color);
+    transition: transform 0.3s ease;
+  }
+  
+  .mobile-tabs-toggle.active i {
+    transform: rotate(180deg);
+  }
+  
+  .mobile-tabs-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid var(--primary-color);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .mobile-tabs-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .mobile-tab-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 16px 20px;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .mobile-tab-option:last-child {
+    border-bottom: none;
+  }
+  
+  .mobile-tab-option:hover {
+    background: var(--primary-light);
+    color: var(--primary-color);
+  }
+  
+  .mobile-tab-option.active {
+    background: var(--primary-color);
+    color: white;
+  }
+  
+  .mobile-tab-option i {
+    font-size: 18px;
+  }
 } 
 
 /* Улучшенные таблицы для мобильных табов */
@@ -1786,6 +1945,8 @@
   font-size: 13px;
   border-radius: 8px;
   overflow: hidden;
+  width: 100%;
+  min-width: 100%;
 }
 
 .tab-content .data-table th,
@@ -1793,6 +1954,105 @@
   padding: 10px 8px;
   font-size: 13px;
   vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Специальные стили для таблицы тарифов */
+#tariffs .data-table {
+  display: table;
+  width: 100%;
+}
+
+#tariffs .data-table th,
+#tariffs .data-table td {
+  display: table-cell;
+  padding: 12px 8px;
+  font-size: 14px;
+  text-align: left;
+}
+
+#tariffs .data-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #dee2e6;
+}
+
+#tariffs .data-table td {
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* Адаптивные стили для таблицы тарифов на мобильных */
+@media (max-width: 768px) {
+  #tariffs {
+    display: block !important;
+  }
+  
+  #tariffs.tab-content.active {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  #tariffs .data-table {
+    font-size: 12px;
+    display: table !important;
+    width: 100% !important;
+  }
+
+  #tariffs .data-table th,
+  #tariffs .data-table td {
+    padding: 8px 6px;
+    font-size: 12px;
+    display: table-cell !important;
+  }
+
+  #tariffs .data-table th:last-child,
+  #tariffs .data-table td:last-child {
+    min-width: 80px;
+  }
+  
+  #tariffs .table-container {
+    display: block !important;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  #tariffs {
+    display: block !important;
+  }
+  
+  #tariffs.tab-content.active {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  #tariffs .data-table {
+    font-size: 11px;
+    display: table !important;
+    width: 100% !important;
+  }
+  
+  #tariffs .data-table th,
+  #tariffs .data-table td {
+    padding: 6px 4px;
+    font-size: 11px;
+    display: table-cell !important;
+  }
+  
+  #tariffs .data-table th:nth-child(3),
+  #tariffs .data-table td:nth-child(3) {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  #tariffs .table-container {
+    display: block !important;
+    overflow-x: auto;
+  }
 }
 
 /* Специальные стили для таблицы бронирований */
@@ -2900,25 +3160,28 @@
   }
 
   /* Адаптивное портфолио */
-  .portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 8px;
-  }
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
 
-  .portfolio-item {
-    aspect-ratio: 1;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+.portfolio-item {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 150px;
+  max-height: 150px;
+}
 
-  .portfolio-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+.portfolio-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
   .delete-photo {
     position: absolute;
@@ -3232,12 +3495,14 @@
 
   /* Адаптивное портфолио */
   .portfolio-grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 6px;
   }
 
   .portfolio-item {
     aspect-ratio: 1;
+    max-width: 120px;
+    max-height: 120px;
   }
 
   .btn-icon.delete {
@@ -4261,7 +4526,7 @@
   .btn-icon.delete {
     width: 20px;
     height: 20px;
-    font-size: 0.6rem;
+    font-size: 10px;
   }
 
   .tariff-card {

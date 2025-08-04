@@ -570,6 +570,60 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Специальная функция для обеспечения работы таба тарифов
+function ensureTariffsTabWorks() {
+    const tariffsTab = document.querySelector('button[onclick*="showTab(\'tariffs\')"]');
+    const tariffsContent = document.getElementById('tariffs');
+    
+    if (tariffsTab && tariffsContent) {
+        // Добавляем обработчик для таба тарифов
+        tariffsTab.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Убираем активный класс со всех табов
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Добавляем активный класс к табу тарифов
+            this.classList.add('active');
+            tariffsContent.classList.add('active');
+            
+            // Принудительно показываем контент тарифов
+            tariffsContent.style.display = 'block';
+            tariffsContent.style.opacity = '1';
+            tariffsContent.style.visibility = 'visible';
+            
+            // Прокручиваем к табу на мобильных устройствах
+            if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                    this.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'center'
+                    });
+                }, 100);
+            }
+        });
+        
+        // Проверяем, если таб тарифов активен при загрузке страницы
+        if (tariffsTab.classList.contains('active')) {
+            tariffsContent.style.display = 'block';
+            tariffsContent.style.opacity = '1';
+            tariffsContent.style.visibility = 'visible';
+        }
+    }
+}
+
+// Вызываем функцию при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    ensureTariffsTabWorks();
+});
+
+// Также вызываем при изменении размера окна
+window.addEventListener('resize', function() {
+    ensureTariffsTabWorks();
+});
+
 // Экспорт функций для использования в других скриптах
 window.ResponsiveUtils = {
     showError: function(input, message) {
