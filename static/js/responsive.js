@@ -269,13 +269,15 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Просмотр изображения в модальном окне
-        item.addEventListener('click', function() {
-            const img = this.querySelector('img');
-            if (img) {
-                showImageModal(img.src, img.alt);
-            }
-        });
+        // Просмотр изображения в модальном окне (только если нет уже установленного onclick)
+        if (!item.hasAttribute('onclick')) {
+            item.addEventListener('click', function() {
+                const img = this.querySelector('img');
+                if (img) {
+                    showImageModal(img.src, img.alt);
+                }
+            });
+        }
     });
     
     // Функция показа модального окна с изображением

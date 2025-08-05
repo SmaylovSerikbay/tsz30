@@ -61,6 +61,13 @@
     .portfolio-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
+    
+    /* Ограничиваем максимум 6 фото в ряду */
+    @media (min-width: 1600px) {
+        .portfolio-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
 }
 
 @media (max-width: 768px) {
@@ -1247,6 +1254,13 @@
     .portfolio-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     }
+    
+    /* Ограничиваем максимум 6 фото в ряду */
+    @media (min-width: 1600px) {
+        .portfolio-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
 }
 
 /* Улучшения для больших экранов */
@@ -1289,7 +1303,14 @@
     }
     
     .portfolio-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    
+    /* Ограничиваем максимум 6 фото в ряду */
+    @media (min-width: 1600px) {
+        .portfolio-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
     }
 }
 
@@ -1334,6 +1355,13 @@
     
     .portfolio-grid {
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+    
+    /* Ограничиваем максимум 6 фото в ряду */
+    @media (min-width: 1600px) {
+        .portfolio-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
     }
 }
 
