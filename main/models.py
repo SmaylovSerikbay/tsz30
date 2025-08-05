@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField
 
 class City(models.Model):
+    """Модель городов"""
     name = models.CharField(max_length=100, unique=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -18,6 +19,7 @@ class City(models.Model):
         ordering = ['name']
 
 class ServiceType(models.Model):
+    """Модель типов услуг"""
     code = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
@@ -35,6 +37,7 @@ class ServiceType(models.Model):
         ordering = ['sort_order', 'name']
 
 class User(AbstractUser):
+    """Модель пользователей"""
     USER_TYPES = (
         ('customer', 'Заказчик'),
         ('performer', 'Исполнитель'),
@@ -104,13 +107,15 @@ class Tariff(models.Model):
         ordering = ['price']
 
 class BusyDate(models.Model):
+    """Модель занятых дат"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()
     
     class Meta:
         unique_together = ['user', 'date']
 
-class Category(models.Model):
+class Category(models.Model):   
+    """Модель категорий"""
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 
@@ -122,6 +127,7 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
 class Order(models.Model):
+    """Модель заказов"""
     STATUS_CHOICES = [
         ('new', 'Новый'),
         ('in_progress', 'В работе'),
@@ -146,7 +152,7 @@ class Order(models.Model):
     title = models.CharField(max_length=200)
     event_type = models.CharField(max_length=20, choices=EVENT_TYPES)
     event_date = models.DateField()
-    city = models.CharField(max_length=100)
+    city = models.CharField(verbose_name='Город', max_length=100)
     venue = models.CharField(max_length=200, blank=True)
     guest_count = models.IntegerField(validators=[MinValueValidator(1)])
     description = models.TextField(blank=True)

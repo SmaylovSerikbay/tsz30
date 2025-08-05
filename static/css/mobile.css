@@ -10,74 +10,12 @@
 }
 
 /* Специальные стили для тарифов */
-#tariffs {
-  display: block;
-}
-
-/* Обеспечиваем видимость тарифов когда таб активен */
-#tariffs.tab-content.active {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  position: relative !important;
-  z-index: 1 !important;
-}
-
-/* Дополнительные гарантии для видимости тарифов */
-#tariffs.tab-content.active * {
-  visibility: visible !important;
-}
-
-#tariffs.tab-content.active .table-container {
-  display: block !important;
-  visibility: visible !important;
-}
-
-#tariffs.tab-content.active .data-table {
-  display: table !important;
-  visibility: visible !important;
-}
-
-/* Убеждаемся, что тарифы НЕ отображаются в портфолио */
-#portfolio #tariffs {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  position: absolute !important;
-  left: -9999px !important;
-  top: -9999px !important;
-  width: 0 !important;
-  height: 0 !important;
-  overflow: hidden !important;
-}
-
-#portfolio .tab-content#tariffs {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  position: absolute !important;
-  left: -9999px !important;
-  top: -9999px !important;
-  width: 0 !important;
-  height: 0 !important;
-  overflow: hidden !important;
-}
-
-/* Тарифы должны отображаться только в своем собственном табе */
 #tariffs.tab-content {
   display: none;
 }
 
 #tariffs.tab-content.active {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  position: relative !important;
-  left: auto !important;
-  top: auto !important;
-  width: auto !important;
-  height: auto !important;
-  overflow: visible !important;
+  display: block;
 }
 
 #tariffs .table-container {
@@ -105,6 +43,23 @@
   font-weight: 600;
   color: #495057;
   border-bottom: 2px solid #dee2e6;
+}
+
+/* ПРИНУДИТЕЛЬНО СКРЫВАЕМ ТАРИФЫ ВО ВСЕХ ДРУГИХ ТАБАХ */
+.tab-content:not(#tariffs) #tariffs,
+#orders #tariffs,
+#portfolio #tariffs,
+#calendar #tariffs,
+#profile #tariffs,
+#orders .tab-content#tariffs,
+#portfolio .tab-content#tariffs,
+#calendar .tab-content#tariffs,
+#profile .tab-content#tariffs {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
 }
 
 /* Общие мобильные улучшения */
@@ -1883,6 +1838,28 @@
     display: none;
   }
   
+  /* Убеждаемся, что тарифы отображаются в мобильной версии */
+  #tariffs.tab-content.active {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  #tariffs .table-container {
+    display: block !important;
+    overflow-x: auto;
+  }
+  
+  #tariffs .data-table {
+    display: table !important;
+    width: 100% !important;
+  }
+  
+  #tariffs .data-table th,
+  #tariffs .data-table td {
+    display: table-cell !important;
+  }
+  
   .mobile-tabs-toggle {
     display: flex;
     align-items: center;
@@ -2026,62 +2003,31 @@
 
 /* Адаптивные стили для таблицы тарифов на мобильных */
 @media (max-width: 768px) {
-  #tariffs {
-    display: block !important;
-  }
-  
-  #tariffs.tab-content.active {
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-  
   #tariffs .data-table {
     font-size: 12px;
-    display: table !important;
-    width: 100% !important;
   }
-
+  
   #tariffs .data-table th,
   #tariffs .data-table td {
     padding: 8px 6px;
     font-size: 12px;
-    display: table-cell !important;
   }
-
+  
   #tariffs .data-table th:last-child,
   #tariffs .data-table td:last-child {
     min-width: 80px;
   }
-  
-  #tariffs .table-container {
-    display: block !important;
-    overflow-x: auto;
-  }
 }
 
 @media (max-width: 480px) {
-  #tariffs {
-    display: block !important;
-  }
-  
-  #tariffs.tab-content.active {
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-  
   #tariffs .data-table {
     font-size: 11px;
-    display: table !important;
-    width: 100% !important;
   }
   
   #tariffs .data-table th,
   #tariffs .data-table td {
     padding: 6px 4px;
     font-size: 11px;
-    display: table-cell !important;
   }
   
   #tariffs .data-table th:nth-child(3),
@@ -2091,9 +2037,26 @@
     text-overflow: ellipsis;
   }
   
+  /* Убеждаемся, что тарифы отображаются на очень маленьких экранах */
+  #tariffs.tab-content.active {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
   #tariffs .table-container {
     display: block !important;
     overflow-x: auto;
+  }
+  
+  #tariffs .data-table {
+    display: table !important;
+    width: 100% !important;
+  }
+  
+  #tariffs .data-table th,
+  #tariffs .data-table td {
+    display: table-cell !important;
   }
 }
 
@@ -4490,6 +4453,28 @@
   .mobile-tab-option i {
     font-size: 16px;
   }
+  
+  /* Убеждаемся, что тарифы отображаются на очень маленьких экранах */
+  #tariffs.tab-content.active {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  #tariffs .table-container {
+    display: block !important;
+    overflow-x: auto;
+  }
+  
+  #tariffs .data-table {
+    display: table !important;
+    width: 100% !important;
+  }
+  
+  #tariffs .data-table th,
+  #tariffs .data-table td {
+    display: table-cell !important;
+  }
 
   .profile-container {
     padding: 8px;
@@ -4568,7 +4553,7 @@
   .btn-icon.delete {
     width: 20px;
     height: 20px;
-    font-size: 10px;
+    font-size: 0.6rem;
   }
 
   .tariff-card {
@@ -4918,71 +4903,4 @@
     .footer-bottom p {
         font-size: 0.7rem;
     }
-}
-
-/* Убеждаемся, что портфолио не содержит тарифы */
-#portfolio *[id*="tariff"] {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  position: absolute !important;
-  left: -9999px !important;
-  top: -9999px !important;
-  width: 0 !important;
-  height: 0 !important;
-  overflow: hidden !important;
-}
-
-/* Агрессивное скрытие тарифов в портфолио */
-#portfolio #tariffs,
-#portfolio .tab-content#tariffs,
-#portfolio [id*="tariff"],
-#portfolio [id*="tariffs"],
-#portfolio *[class*="tariff"],
-#portfolio *[class*="tariffs"] {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  position: absolute !important;
-  left: -9999px !important;
-  top: -9999px !important;
-  width: 0 !important;
-  height: 0 !important;
-  overflow: hidden !important;
-  pointer-events: none !important;
-  z-index: -9999 !important;
-  transform: scale(0) !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  background: transparent !important;
-  color: transparent !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
-}
-
-/* Дополнительно скрываем любые элементы с текстом "тариф" в портфолио */
-#portfolio *:contains("тариф"),
-#portfolio *:contains("Тариф"),
-#portfolio *:contains("TARIFF"),
-#portfolio *:contains("tariff") {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  position: absolute !important;
-  left: -9999px !important;
-  top: -9999px !important;
-  width: 0 !important;
-  height: 0 !important;
-  overflow: hidden !important;
-  pointer-events: none !important;
-  z-index: -9999 !important;
-  transform: scale(0) !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  background: transparent !important;
-  color: transparent !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
 }

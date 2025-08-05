@@ -2249,6 +2249,16 @@
       const tabButtons = document.querySelectorAll('.tab-button');
       tabButtons.forEach(button => button.classList.remove('active'));
       
+      // ПРИНУДИТЕЛЬНО СКРЫВАЕМ ТАРИФЫ ВО ВСЕХ ДРУГИХ ТАБАХ
+      const allTariffs = document.querySelectorAll('#tariffs');
+      allTariffs.forEach(tariff => {
+        if (tariff.closest('.tab-content') && tariff.closest('.tab-content').id !== tabName) {
+          tariff.style.display = 'none';
+          tariff.style.visibility = 'hidden';
+          tariff.style.opacity = '0';
+        }
+      });
+      
       // Показываем нужный таб
       document.getElementById(tabName).classList.add('active');
       
@@ -2273,6 +2283,16 @@
       // Убираем активный класс со всех опций
       const tabOptions = document.querySelectorAll('.mobile-tab-option');
       tabOptions.forEach(option => option.classList.remove('active'));
+      
+      // ПРИНУДИТЕЛЬНО СКРЫВАЕМ ТАРИФЫ ВО ВСЕХ ДРУГИХ ТАБАХ
+      const allTariffs = document.querySelectorAll('#tariffs');
+      allTariffs.forEach(tariff => {
+        if (tariff.closest('.tab-content') && tariff.closest('.tab-content').id !== tabName) {
+          tariff.style.display = 'none';
+          tariff.style.visibility = 'hidden';
+          tariff.style.opacity = '0';
+        }
+      });
       
       // Показываем нужный таб
       document.getElementById(tabName).classList.add('active');
