@@ -1,0 +1,98 @@
+/*
+ * Исправления для карточек профиля - портретный формат
+ * 
+ * Этот файл исправляет проблему с обрезкой фотографий профиля в карточках исполнителей.
+ * Теперь фотографии отображаются в портретном формате с правильными пропорциями,
+ * показывая полное лицо человека.
+ */
+
+/* Карточки исполнителей в каталоге */
+.performer-image {
+    width: 100%;
+    height: 280px; /* Увеличена высота для лучшего отображения лица */
+    object-fit: cover;
+    object-position: top center; /* Фокус на верхней части (лицо) */
+    transition: transform 0.3s ease;
+}
+
+/* Карточки исполнителей на главной странице */
+.performer-photo {
+    height: 280px; /* Увеличена высота для лучшего отображения лица */
+}
+
+.performer-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center; /* Фокус на верхней части (лицо) */
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+    .performer-image,
+    .performer-photo {
+        height: 240px; /* Оптимизированная высота для планшетов */
+    }
+}
+
+@media (max-width: 480px) {
+    .performer-image,
+    .performer-photo {
+        height: 200px; /* Оптимизированная высота для мобильных */
+    }
+}
+
+/* Дополнительные улучшения для карточек */
+.performer-card:hover .performer-image,
+.performer-card:hover .performer-photo img {
+    transform: scale(1.02); /* Легкое увеличение при наведении */
+}
+
+/* Обеспечиваем правильное отображение для всех изображений профиля в карточках */
+.performer-card img,
+.card img {
+    object-fit: cover;
+    object-position: top center; /* Всегда фокус на лице */
+}
+
+/* Улучшения для карточек исполнителей */
+.performer-card {
+    overflow: hidden;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.performer-card:hover {
+    transform: translateY(-2px); /* Эффект поднятия при наведении */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* Улучшенная тень */
+}
+
+/* Улучшения для изображений в карточках */
+.performer-image,
+.performer-photo img {
+    border-radius: 12px 12px 0 0; /* Скругленные углы сверху */
+}
+
+/* Обеспечиваем правильное отображение лица на фотографиях */
+.performer-image,
+.performer-photo img {
+    object-position: top center; /* Дублируем для надежности */
+}
+
+/* Дополнительные стили для мобильных устройств */
+@media (max-width: 768px) {
+    .performer-card {
+        margin-bottom: 16px;
+    }
+    
+    .performer-image,
+    .performer-photo {
+        border-radius: 8px 8px 0 0; /* Меньшие скругления для мобильных */
+    }
+}
+
+@media (max-width: 480px) {
+    .performer-card {
+        margin-bottom: 12px;
+    }
+} 
