@@ -1589,56 +1589,7 @@
           </div>
         </div>
 
-      <!-- Таб Тарифы -->
-      <div id="tariffs" class="tab-content">
-        <div class="quick-actions">
-          <button class="btn btn-primary" onclick="addTariff()">
-            <i class="ri-add-line"></i> Добавить тариф
-            </button>
-          </div>
 
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Название</th>
-                <th>Цена</th>
-                <th>Описание</th>
-                <th>Действия</th>
-              </tr>
-            </thead>
-            <tbody>
-            {% for tariff in tariffs %}
-              <tr>
-                <td><strong>{{ tariff.name }}</strong></td>
-                <td><span class="card-price">{{ tariff.price }} ₸</span></td>
-                <td>{{ tariff.description|truncatechars:100 }}</td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn btn-small btn-outline" onclick="editTariff('{{ tariff.id }}')">
-                  <i class="ri-edit-line"></i>
-                </button>
-                <form action="{% url 'main:delete_tariff' tariff.id %}" method="POST" style="display: inline;">
-                  {% csrf_token %}
-                      <button type="submit" class="btn btn-small btn-outline" onclick="return confirm('Удалить этот тариф?')">
-                    <i class="ri-delete-bin-line"></i>
-                  </button>
-                </form>
-            </div>
-                </td>
-              </tr>
-            {% empty %}
-              <tr>
-                <td colspan="4" style="text-align: center; padding: 40px; color: #6c757d;">
-                  <i class="ri-money-dollar-circle-line" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
-            <p>Добавьте ваши тарифы</p>
-                </td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-          </div>
-        </div>
 
       <!-- Таб Календарь -->
       <div id="calendar" class="tab-content">

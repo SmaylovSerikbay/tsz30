@@ -14,6 +14,9 @@
   
   <!-- Touch device styles -->
   <style>
+    .home-btn{
+      max-width: 100% !important;
+    }
     @media (pointer: coarse) {
       .mobile-menu-toggle {
         min-width: 24px;
@@ -983,7 +986,7 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn accent">Сохранить изменения</button>
+                <button type="submit" class="btn accent home-btn">Сохранить изменения</button>
                 {% if user.user_type == 'performer' %}
                 <a href="{% url 'main:view_profile' user.id %}" class="btn outline">Предпросмотр профиля</a>
                 {% endif %}

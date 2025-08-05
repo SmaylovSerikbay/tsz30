@@ -6,6 +6,9 @@
 {% block content %}
 
 <style>
+    .home-btn{
+        max-width: 100% !important;
+    }
 /* Мобильная адаптация для главной страницы */
 @media (max-width: 768px) {
     .hero {
@@ -30,6 +33,7 @@
     .hero-buttons {
         flex-direction: column;
         gap: var(--spacing-sm);
+        align-items: center;
     }
 
     .hero-buttons .btn {
@@ -250,7 +254,7 @@
         <p>Фотографы, видеографы, музыканты и другие профессионалы для вашего праздника</p>
         {% if not user.is_authenticated %}
             <div class="hero-buttons">
-                <a href="{% url 'main:auth' %}" class="btn accent">
+                <a href="{% url 'main:auth' %}" class="btn accent home-btn">
                     <i class="ri-login-box-line"></i>
                     Войти
                 </a>

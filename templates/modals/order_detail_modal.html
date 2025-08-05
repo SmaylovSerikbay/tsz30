@@ -169,14 +169,7 @@ function generateOrderDetailHTML(order, action) {
         <!-- Кнопка будет добавлена динамически -->
       </div>
       
-      <!-- Отладочная информация (только для разработки) -->
-      ${order.is_customer === false && order.is_performer === false ? `
-      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #e9ecef; background: #f8f9fa; padding: 12px; border-radius: 8px;">
-        <p style="margin: 0; font-size: 0.8rem; color: #6c757d;">
-          DEBUG: is_customer = ${order.is_customer}, status = ${order.status}, order_type = ${order.order_type}
-        </p>
-      </div>
-      ` : ''}
+
     </div>
   `;
 }

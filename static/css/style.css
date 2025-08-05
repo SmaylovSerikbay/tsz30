@@ -3968,6 +3968,11 @@ select.form-input {
         gap: 10px;
     }
     
+    .portfolio-item {
+        max-width: 150px;
+        max-height: 150px;
+    }
+    
     /* Тарифы для мобильных */
     .tariff-list,
     .subscription-plans {
@@ -4263,6 +4268,11 @@ select.form-input {
     .portfolio-grid {
         grid-template-columns: 1fr;
         gap: 8px;
+    }
+    
+    .portfolio-item {
+        max-width: 120px;
+        max-height: 120px;
     }
     
     /* Формы для очень маленьких экранов */
@@ -4768,10 +4778,27 @@ select.form-input {
   display: block;
 }
 
+/* ПРИНУДИТЕЛЬНО СКРЫВАЕМ ТАРИФЫ ВО ВСЕХ ДРУГИХ ТАБАХ */
+.tab-content:not(#tariffs) #tariffs,
+#orders #tariffs,
+#portfolio #tariffs,
+#calendar #tariffs,
+#profile #tariffs,
+#orders .tab-content#tariffs,
+#portfolio .tab-content#tariffs,
+#calendar .tab-content#tariffs,
+#profile .tab-content#tariffs {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+
 /* Портфолио */
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 12px;
 }
 
@@ -4788,6 +4815,8 @@ select.form-input {
   background: #f8f9fa;
   cursor: pointer;
   transition: transform 0.3s ease;
+  max-width: 180px;
+  max-height: 180px;
 }
 
 .portfolio-item:hover {
